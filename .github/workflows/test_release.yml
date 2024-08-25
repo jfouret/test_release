@@ -1,3 +1,4 @@
+
 name: TEST Release
 
 on:
@@ -31,27 +32,7 @@ jobs:
           echo 'yo ${{ matrix.NAME }}' > ${{ matrix.NAME }}/test.txt
           tar cvzf ${{ matrix.NAME }}.tar.gz ${{ matrix.NAME }}
 
-      - name: Create release
-        id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        if: github.event.release.tag_name == "v${{ matrix.VERSION }}"
-        uses: actions/create-release@v1
-        with:
-          tag_name: "v${{ matrix.VERSION }}"
-          release_name: "${{ matrix.NAME }} v${{ matrix.VERSION }}"
-          body: |
-            Metadata of the release:
-            - NAME: ${{ matrix.NAME }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./${{ matrix.NAME }}.tar.gz
-          asset_name: ${{ matrix.NAME }}
-          asset_content_type: application/x-tar+gzip
+      - name: Create GitHub Release
+        run: |
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          gh release create ${{ github.ref }} ${{ matrix.NAME }}.tar.gz --title "Release ${{ github.ref }}" --notes "Release for ${{ matrix.NAME }} version ${{ matrix.VERSION }}"
