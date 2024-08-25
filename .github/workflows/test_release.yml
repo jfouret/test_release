@@ -33,11 +33,10 @@ jobs:
           tar cvzf ${{ matrix.NAME }}.tar.gz ${{ matrix.NAME }}
 
       - name: Create release
-        uses: github-script@v6
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.repos.createRelease({
+            github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: 'v${{ matrix.VERSION }}-${{ matrix.NAME }}',
@@ -46,11 +45,10 @@ jobs:
             })
 
       - name: Upload artifact to release
-        uses: github-script@v6
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.repos.uploadReleaseAsset({
+            github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
               release_id: github.repos.getReleaseByTag({
