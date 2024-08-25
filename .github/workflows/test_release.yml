@@ -44,6 +44,7 @@ jobs:
               name: 'Release ${{ matrix.NAME }} ${{ matrix.VERSION }}',
               body: 'Release notes for ${{ matrix.VERSION }}-${{ matrix.NAME }}'
             });
+            console.log(JSON.stringify(response, null, 2));
             core.setOutput("release_id", response.data.id);
 
       - name: Upload artifact to release
