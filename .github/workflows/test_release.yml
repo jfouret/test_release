@@ -27,7 +27,7 @@ jobs:
         if: github.event.release.tag_name == "v${{ matrix.VERSION }}"
         run: |
           apt-get update
-          apt-get -y install tar gzip gh
+          apt-get -y install tar gzip gh ca-certificates
           mkdir ${{ matrix.NAME }}
           echo 'yo ${{ matrix.NAME }}' > ${{ matrix.NAME }}/test.txt
           tar cvzf ${{ matrix.NAME }}.tar.gz ${{ matrix.NAME }}
