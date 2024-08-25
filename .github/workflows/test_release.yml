@@ -37,7 +37,7 @@ jobs:
         id: create_release
         with:
           script: |
-            let response = github.rest.repos.createRelease({
+            let response = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: 'v${{ matrix.VERSION }}-${{ matrix.NAME }}',
