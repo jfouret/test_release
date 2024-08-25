@@ -39,7 +39,7 @@ jobs:
             github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_name: 'v${{ matrix.VERSION }}-${{ matrix.NAME }}',
+              tag_name: 'v${{ matrix.VERSION }}',
               name: 'Release ${{ matrix.NAME }} ${{ matrix.VERSION }}',
               body: 'Release notes for ${{ matrix.VERSION }}-${{ matrix.NAME }}'
             })
