@@ -27,12 +27,13 @@ jobs:
         if: github.event.release.tag_name == "v${{ matrix.VERSION }}"
         run: |
           apt-get update
-          apt-get -y install tar gzip
+          apt-get -y install tar gzip gh
           mkdir ${{ matrix.NAME }}
           echo 'yo ${{ matrix.NAME }}' > ${{ matrix.NAME }}/test.txt
           tar cvzf ${{ matrix.NAME }}.tar.gz ${{ matrix.NAME }}
 
       - name: Create GitHub Release
+        shell: bash
         run: |
-          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
           gh release create ${{ github.ref }} ${{ matrix.NAME }}.tar.gz --title "Release ${{ github.ref }}" --notes "Release for ${{ matrix.NAME }} version ${{ matrix.VERSION }}"
