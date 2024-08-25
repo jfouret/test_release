@@ -37,14 +37,14 @@ jobs:
         id: create_release
         with:
           script: |
-            const response = await github.rest.repos.createRelease({
+            let response = github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: 'v${{ matrix.VERSION }}-${{ matrix.NAME }}',
               name: 'Release ${{ matrix.NAME }} ${{ matrix.VERSION }}',
               body: 'Release notes for ${{ matrix.VERSION }}-${{ matrix.NAME }}'
             });
-            core.setOutput("release_id", response.data.id);  # This line sets the release ID as an output
+            core.setOutput("release_id", response.data.id);
 
       - name: Upload artifact to release
         uses: actions/github-script@v7
